@@ -1,6 +1,3 @@
 <?php
-echo json_encode([
-    "extensions" => get_loaded_extensions(),
-    "pdo_drivers" => PDO::getAvailableDrivers()
-]);
+echo json_encode(["ext" => get_loaded_extensions(), "pdo" => PDO::getAvailableDrivers()]);
 ?>
