@@ -2,13 +2,13 @@
 header("Content-Type: application/json; charset=utf-8");
 header("Access-Control-Allow-Origin: *");
 
-$host   = getenv('MYSQLHOST') ?: getenv('MYSQL_HOST');
-$dbname = getenv('MYSQLDATABASE') ?: getenv('MYSQL_DATABASE');
-$user   = getenv('MYSQLUSER') ?: getenv('MYSQL_USER');
-$pass   = getenv('MYSQLPASSWORD') ?: getenv('MYSQL_PASSWORD');
-$port   = getenv('MYSQLPORT') ?: getenv('MYSQL_PORT') ?: 3306;
+$host   = getenv('MYSQLHOST');
+$dbname = getenv('MYSQLDATABASE');
+$user   = getenv('MYSQLUSER');
+$pass   = getenv('MYSQLPASSWORD');
+$port   = getenv('MYSQLPORT') ?: 3306;
 
-$conn = mysqli_connect($host, $user, $pass, $dbname, $port);
+$conn = mysqli_connect($host, $user, $pass, $dbname, (int)$port);
 
 if (!$conn) {
     echo json_encode(["error" => mysqli_connect_error()]);
@@ -16,6 +16,12 @@ if (!$conn) {
 }
 
 $result = mysqli_query($conn, "SELECT * FROM productos");
+
+if (!$result) {
+    echo json_encode(["error" => mysqli_error($conn)]);
+    exit;
+}
+
 $data = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $data[] = $row;
