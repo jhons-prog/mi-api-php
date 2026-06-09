@@ -1,5 +1,8 @@
 [phases.setup]
-nixPkgs = ["php83Extensions.pdo_mysql", "php83"]
+nixPkgs = ["php82", "php82Extensions.pdo_mysql", "php82Extensions.mysqli", "php82Extensions.pdo"]
+
+[phases.build]
+cmds = ["cp php.ini /etc/php.ini"]
 
 [start]
-cmd = "php83 -S 0.0.0.0:$PORT"
+cmd = "php -S 0.0.0.0:$PORT -c php.ini"
